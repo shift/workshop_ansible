@@ -1,0 +1,24 @@
+---
+- hosts: app
+  tasks:
+    - name: Run setup to gather facts for HAProxy configuration
+      action: setup
+- hosts: haproxy
+  serial: 1
+  sudo: true
+  vars:
+    - distro: "{{ ansible_distribution }}"
+  serial: 1
+  vars_files:
+    - "roles/haproxy/vars/{{ distro }}.yml"
+  pre_tasks:
+    - name: Raise awareness that this is happening.
+      hipchat: "token=REPLACEME room=DevOps msg='Running HAProxy playbook on {{ inventory_hostname }} with {{ inventory_file }}'"
+  post_tasks:
+    - name: Raise awareness that this has finished.
+      hipchat: "token=REPLACEME room=DevOps msg='Finished running HAProxy playbook on {{ inventory_hostname }} with {{ inventory_file }}'"
+  roles:
+    - 'haproxy'
+  handlers:
+    - name: restart haproxy
+      action: service name=haproxy state=restarted

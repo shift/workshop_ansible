@@ -1,0 +1,5 @@
+---
+package_name: 'haproxy'
+package_version: '1.4.24'
+package_config: '/etc/haproxy/haproxy.cfg'
+package_manager: "yum"

@@ -1,0 +1,6 @@
+[haproxy]
+localhost ansible_connection=local
+10.0.128.109:53424 ansible_user=vagrant
+
+[app]
+localhost ansible_connection=local

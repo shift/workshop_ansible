@@ -1,0 +1,9 @@
+---
+- name: "Install HAProxy package for {{ ansible_distribution }}"
+  action: "{{ package_manager }} pkg={{ package_name }} state=installed"
+- name: Reconfigure haproxy
+  template: "src=haproxy.cfg.j2 dest={{ package_config }} mode=0640"
+  notify:
+    - restart haproxy
+- name: Waiting for HAProxy to start
+  wait_for: "port=80 host={{ ansible_default_ipv4.address }}"
